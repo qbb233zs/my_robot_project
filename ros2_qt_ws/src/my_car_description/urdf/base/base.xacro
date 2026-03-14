@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <link name="base_footprint"/>
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+        <origin xyz="0.0 0.0 0.076" rpy="0 0 0"/>
+    </joint>
+
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="0.12" radius="0.10"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0.0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="0.12" radius="0.10"/>
+            </geometry>
+            <material name="blue"/>
+        </collision>
+
+        <inertial>
+            <mass value="0.2"/>
+            <inertia ixx="0.0122666" ixy="0" ixz="0" iyy="0.0122666" iyz="0" izz="0.02"/>
+        </inertial>
+    </link>
+
+</robot>
