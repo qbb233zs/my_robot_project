@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find mybot_description)/urdf/mybot/common_inertia.xacro"/>
+
+  <xacro:macro name="base_xacro" params="length radius">
+    <!-- 1. base_footprint（地面基准，z必须为0） -->
+    <link name="base_footprint"/>
+
+    <!-- 2. 基座主体link -->
+    <link name="base_link">
+      <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <geometry>
+          <cylinder radius="${radius}" length="${length}"/>
+        </geometry>
+        <material name="white">
+          <color rgba="1.0 1.0 1.0 0.5"/>
+        </material>
+      </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <geometry>
+          <cylinder radius="${radius}" length="${length}"/>
+        </geometry>
+        <material name="white">
+          <color rgba="1.0 1.0 1.0 0.5"/>
+        </material>
+      </collision>
+
+      <!-- 惯性矩阵（调用通用宏，参数正确） -->
+      <xacro:cylinder_inertia m="1.0" r="${radius}" h="${length}"/>
+    </link>
+
+    <!-- 3. base_footprint 到 base_link 的连接关节（关键：z轴为车轮半径+基座半高） -->
+    <!-- 车轮半径是0.032，基座半高是0.06 → z = 0.032 + 0.06 = 0.092 -->
+    <joint name="base_footprint_to_base" type="fixed">
+      <parent link="base_footprint"/>
+      <child link="base_link"/>
+      <origin xyz="0.0 0.0 0.092" rpy="0.0 0.0 0.0"/>
+    </joint>
+  </xacro:macro>
+</robot>

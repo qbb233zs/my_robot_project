@@ -1,0 +1,42 @@
+controller_manager:
+  ros_parameters:
+    update_rate: 100  # 控制器更新频率，和仿真匹配
+    use_sim_time: true
+
+  # 声明要加载的两个控制器
+  fishbot_joint_state_broadcaster:
+    type: joint_state_broadcaster/JointStateBroadcaster
+  fishbot_diff_drive_controller:
+    type: diff_drive_controller/DiffDriveController
+
+# 差速控制器核心配置，直接决定里程计能不能正常发布
+mybot_diff_drive_controller:
+  ros_parameters:
+    # 【必须和xacro里的关节名完全一致，差一个字母都不行】
+    left_wheel_names: ["left_wheel_joint"]
+    right_wheel_names: ["right_wheel_joint"]
+
+    # 【必须和你的URDF里的机器人尺寸一致】
+    wheel_separation: 0.2    # 左右轮子的间距（单位：米）
+    wheel_radius: 0.032      # 轮子半径（单位：米）
+
+    use_stamped_vel: false
+    # 【SLAM必须的里程计/TF配置】
+    publish_rate: 50.0        # 里程计发布频率
+    base_frame_id: base_link  # 机器人基坐标系，必须和URDF一致
+    odom_frame_id: odom       # 里程计坐标系，必须和SLAM配置一致
+    enable_odom_tf: true      # 自动发布odom-base_link的TF变换，SLAM必须依赖这个！
+
+    # 速度限制
+    linear:
+      x:
+        max_velocity: 1.0
+        min_velocity: -1.0
+    angular:
+      z:
+        max_velocity: 2.0
+        min_velocity: -2.0
+
+# 关节状态广播器，默认配置即可
+mybot_joint_state_broadcaster:
+  ros_parameters: {}
